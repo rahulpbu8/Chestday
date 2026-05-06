@@ -1,0 +1,58 @@
+<nav class="navbar" [class.admin-navbar]="isAdminView" *ngIf="showNavbar">
+    <div class="container navbar-container">
+        <div class="logo">
+            <a routerLink="/">CHEST DAY<span *ngIf="!isAdminView">.</span><span class="admin-label" *ngIf="isAdminView">Admin</span></a>
+        </div>
+
+        <!-- Desktop Menu - Hidden in Admin View -->
+        <nav class="nav-links" [class.active]="isMenuOpen" *ngIf="!isAdminView">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                (click)="isMenuOpen = false">Home</a>
+            <a routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false">About Us</a>
+            <a routerLink="/branches" routerLinkActive="active" (click)="isMenuOpen = false">Branches</a>
+            <a routerLink="/pricing" routerLinkActive="active" (click)="isMenuOpen = false">Pricing</a>
+            <a routerLink="/shop" routerLinkActive="active" (click)="isMenuOpen = false">Shop</a>
+            <a routerLink="/contact" routerLinkActive="active" (click)="isMenuOpen = false">Contact</a>
+        </nav>
+
+        <div class="auth-buttons desktop-only" *ngIf="!isAdminView">
+            <ng-container *ngIf="!currentUser">
+                <a routerLink="/login" class="login-link">Login</a>
+                <a routerLink="/register" class="btn btn-primary">Join Now</a>
+            </ng-container>
+            <ng-container *ngIf="currentUser">
+                <a routerLink="/profile" class="user-greeting-link">
+                    <span class="user-greeting">Hi, {{ currentUser.name }}</span>
+                </a>
+                <button (click)="logout()" class="btn btn-outline small-btn">Logout</button>
+            </ng-container>
+        </div>
+
+        <div class="admin-actions" *ngIf="isAdminView">
+            <a routerLink="/admin/profile" class="admin-profile-link" *ngIf="currentAdmin" [title]="currentAdmin.name">
+                <div class="avatar-xs">
+                    <span class="material-symbols-outlined">person</span>
+                </div>
+                <span class="admin-name">{{ currentAdmin.name }}</span>
+            </a>
+            <button (click)="logout()" class="btn-logout-top" title="Logout">
+                <span class="material-symbols-outlined">logout</span>
+            </button>
+        </div>
+
+        <div class="nav-actions" *ngIf="!isAdminView">
+            <a routerLink="/profile" class="profile-icon" title="My Profile" *ngIf="currentUser">
+                <span class="material-symbols-outlined icon">person</span>
+            </a>
+            <a routerLink="/cart" class="cart-icon" title="View Cart">
+                <span class="material-symbols-outlined icon">shopping_cart</span>
+                <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+            </a>
+            <button class="hamburger" (click)="toggleMenu()">
+                <span class="bar" [class.open]="isMenuOpen"></span>
+                <span class="bar" [class.open]="isMenuOpen"></span>
+                <span class="bar" [class.open]="isMenuOpen"></span>
+            </button>
+        </div>
+    </div>
+</nav>

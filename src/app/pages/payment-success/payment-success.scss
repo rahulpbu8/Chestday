@@ -1,0 +1,104 @@
+.success-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: url('../../../assets/images/hero.png') no-repeat center center/cover;
+    background-attachment: fixed;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+    }
+}
+
+.success-card {
+    position: relative;
+    z-index: 1;
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 40px rgba(212, 255, 42, 0.2);
+    max-width: 500px;
+    width: 100%;
+    animation: slideUp 0.5s ease-out;
+
+    .icon-circle {
+        width: 80px;
+        height: 80px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 0 20px var(--primary);
+
+        .checkmark {
+            font-size: 3rem;
+            color: var(--bg-dark);
+            font-weight: 800;
+        }
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-light);
+    }
+
+    p {
+        color: var(--text-gray);
+        margin-bottom: 2rem;
+    }
+
+    .details {
+        background: rgba(38, 38, 38, 0.5);
+        backdrop-filter: blur(4px);
+        padding: 1.5rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--bg-card-border);
+        margin-bottom: 2rem;
+
+        p {
+            margin-bottom: 0.5rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            span {
+                color: var(--primary);
+                font-weight: 700;
+            }
+        }
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

@@ -1,0 +1,63 @@
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <span class="material-symbols-outlined">{{ isEditMode ? 'edit_location' : 'add_location' }}</span>
+      <h2>{{ isEditMode ? 'Edit' : 'Add New' }} Branch</h2>
+    </div>
+
+    <form [formGroup]="branchForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="city">City</label>
+        <div class="input-wrapper">
+          <span class="material-symbols-outlined">location_city</span>
+          <input type="text" id="city" formControlName="city" placeholder="e.g., Kochi">
+        </div>
+        <div class="error" *ngIf="branchForm.get('city')?.touched && branchForm.get('city')?.invalid">
+          City is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location / Address</label>
+        <div class="input-wrapper">
+          <span class="material-symbols-outlined">map</span>
+          <input type="text" id="location" formControlName="location" placeholder="e.g., Edappally Bypass">
+        </div>
+        <div class="error" *ngIf="branchForm.get('location')?.touched && branchForm.get('location')?.invalid">
+          Location is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <div class="input-wrapper">
+          <span class="material-symbols-outlined">call</span>
+          <input type="text" id="phone" formControlName="phone" placeholder="e.g., +91 98765 43210">
+        </div>
+        <div class="error" *ngIf="branchForm.get('phone')?.touched && branchForm.get('phone')?.invalid">
+          Phone is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="locationLink">Google Location Link</label>
+        <div class="input-wrapper">
+          <span class="material-symbols-outlined">link</span>
+          <input type="text" id="locationLink" formControlName="locationLink"
+            placeholder="e.g., https://goo.gl/maps/...">
+        </div>
+        <div class="error" *ngIf="branchForm.get('locationLink')?.touched && branchForm.get('locationLink')?.invalid">
+          Google Location Link is required
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="onCancel()" [disabled]="isLoading">CANCEL</button>
+        <button type="submit" class="btn-submit" [disabled]="branchForm.invalid || isLoading">
+          <span class="spinner" *ngIf="isLoading"></span>
+          {{ isEditMode ? 'UPDATE BRANCH' : 'CREATE BRANCH' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

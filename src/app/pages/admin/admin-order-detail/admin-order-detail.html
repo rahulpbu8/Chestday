@@ -1,0 +1,180 @@
+<div class="admin-dashboard">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="material-symbols-outlined">fitness_center</span>
+      <h2>CHEST DAY<span>{{ isEliteAdmin ? 'ELITE' : '' }} ADMIN</span></h2>
+    </div>
+
+    <nav>
+      <a routerLink="/admin">
+        <span class="material-symbols-outlined">grid_view</span>
+        Products
+      </a>
+      <a routerLink="/admin/branches">
+        <span class="material-symbols-outlined">location_on</span>
+        Branches
+      </a>
+      <a routerLink="/admin/plans">
+        <span class="material-symbols-outlined">payments</span>
+        Plans
+      </a>
+      <a routerLink="/admin/members">
+        <span class="material-symbols-outlined">group</span>
+        Members
+      </a>
+      <a routerLink="/admin/orders" class="active">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        Orders
+      </a>
+      <a routerLink="/admin/users" *ngIf="isEliteAdmin">
+        <span class="material-symbols-outlined">manage_accounts</span>
+        Admins
+      </a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header>
+      <div class="header-left">
+        <button (click)="goBack()" class="btn-back">
+          <span class="material-symbols-outlined">arrow_back</span>
+          Back to Orders
+        </button>
+        <h1 *ngIf="order">Order ID: #{{ order.id.substring(0, 8) }}</h1>
+      </div>
+      <div class="header-right" *ngIf="order">
+        <span class="status-badge الكبير" [class]="getStatusClass(order.status)">
+          {{ order.status | uppercase }}
+        </span>
+      </div>
+    </header>
+
+    @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading order details...</p>
+    </div>
+    } @else if (order) {
+    <div class="order-grid">
+      <!-- Customer & Shipping Section -->
+      <div class="detail-cards">
+        <div class="detail-card">
+          <div class="card-header">
+            <span class="material-symbols-outlined">person</span>
+            <h3>Customer Details</h3>
+          </div>
+          <div class="card-body">
+            <div class="info-row">
+              <span class="label">Name:</span>
+              <span class="value">{{ order.user?.name }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Email:</span>
+              <span class="value">{{ order.user?.email }}</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Phone:</span>
+              <span class="value">{{ order.user?.phone || 'N/A' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-card">
+          <div class="card-header">
+            <span class="material-symbols-outlined">location_on</span>
+            <h3>Shipping Address</h3>
+          </div>
+          <div class="card-body" *ngIf="order.address">
+            <div class="address-box">
+              <p><strong>{{ order.address.fullName }}</strong></p>
+              <p>{{ order.address.addressLine1 }}</p>
+              <p *ngIf="order.address.addressLine2">{{ order.address.addressLine2 }}</p>
+              <p>{{ order.address.city }}, {{ order.address.state }} {{ order.address.zipCode }}</p>
+              <p class="phone">Phone: {{ order.address.phone }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-card">
+            <div class="card-header">
+              <span class="material-symbols-outlined">payments</span>
+              <h3>Payment Info</h3>
+            </div>
+            <div class="card-body">
+              <div class="info-row">
+                <span class="label">Method:</span>
+                <span class="value">{{ order.paymentMethod | uppercase }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Status:</span>
+                <span class="value">{{ order.status | uppercase }}</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Date:</span>
+                <span class="value">{{ order.createdAt | date:'medium' }}</span>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <!-- Items Section -->
+      <div class="items-card">
+        <div class="card-header">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <h3>Order Items</h3>
+        </div>
+        <div class="card-body">
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th class="text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of order.items; track item.id) {
+              <tr>
+                <td>
+                  <div class="product-info">
+                    <span class="product-name">{{ item.product?.name }}</span>
+                    <span class="product-category">{{ item.product?.category }}</span>
+                  </div>
+                </td>
+                <td>${{ item.price | number:'1.2-2' }}</td>
+                <td>{{ item.quantity }}</td>
+                <td class="text-right">${{ (item.price * item.quantity) | number:'1.2-2' }}</td>
+              </tr>
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" class="text-right label">Subtotal</td>
+                <td class="text-right value">${{ getSubtotal() | number:'1.2-2' }}</td>
+              </tr>
+              <tr>
+                <td colspan="3" class="text-right label">Tax (18% GST)</td>
+                <td class="text-right value">${{ getTax() | number:'1.2-2' }}</td>
+              </tr>
+              <tr>
+                <td colspan="3" class="text-right label">Shipping</td>
+                <td class="text-right value">${{ getShipping() | number:'1.2-2' }}</td>
+              </tr>
+              <tr class="grand-total">
+                <td colspan="3" class="text-right label">Grand Total</td>
+                <td class="text-right value">${{ order.totalAmount | number:'1.2-2' }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+    } @else {
+    <div class="empty-state">
+      <p>Order not found.</p>
+      <button (click)="goBack()" class="btn btn-primary">Back to Orders</button>
+    </div>
+    }
+  </main>
+</div>

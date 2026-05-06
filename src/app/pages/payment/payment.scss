@@ -1,0 +1,146 @@
+.page-header {
+    padding: 4rem 0 2rem;
+    background: radial-gradient(circle at center, rgba(5, 5, 5, 0.7) 0%, rgba(5, 5, 5, 0.95) 100%), url('../../../assets/images/hero.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    text-align: center;
+
+    h1 {
+        font-size: 2.5rem;
+        text-transform: uppercase;
+
+        span {
+            color: var(--primary);
+        }
+    }
+}
+
+.payment-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+
+        span {
+            color: var(--primary);
+        }
+    }
+}
+
+.summary-card {
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--bg-card-border);
+
+    .item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        color: var(--text-gray);
+    }
+
+    .divider {
+        height: 1px;
+        background: var(--border-color);
+        margin: 1.5rem 0;
+    }
+
+    .total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+
+        .amount {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+    }
+}
+
+.methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    .method-card {
+        background: rgba(38, 38, 38, 0.4);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        padding: 1.5rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--bg-card-border);
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        &:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        &.active {
+            border-color: var(--primary);
+            background: rgba(212, 255, 42, 0.05);
+            box-shadow: 0 0 20px rgba(212, 255, 42, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .options-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+
+            span {
+                font-size: 0.75rem;
+                color: var(--text-gray);
+                background: rgba(255, 255, 255, 0.05);
+                padding: 2px 6px;
+                border-radius: 4px;
+            }
+        }
+    }
+}
+
+.action-area {
+    text-align: center;
+
+    .btn {
+        width: 100%;
+        max-width: 300px;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        font-size: 1.1rem;
+    }
+
+    .secure-note {
+        color: var(--text-gray);
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .payment-wrapper {
+        grid-template-columns: 1fr;
+    }
+}

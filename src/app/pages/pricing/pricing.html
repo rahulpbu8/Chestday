@@ -1,0 +1,27 @@
+<div class="page-header">
+    <h1 class="text-gradient">PLANS & <span>PRICING</span></h1>
+</div>
+
+<div class="container section">
+    <div *ngIf="loading" class="text-center w-100">
+        <span class="spinner-border text-primary"></span>
+    </div>
+    <div class="pricing-grid" *ngIf="!loading">
+        <div class="price-card" *ngFor="let plan of pricingPlans" [class.popular]="plan.isPopular">
+            <div *ngIf="plan.isPopular" class="popular-badge">MOST POPULAR</div>
+            <div class="card-header">
+                <h3>{{plan.name}}</h3>
+                <div class="price">₹{{plan.price}}<span>/{{plan.period}}</span></div>
+            </div>
+
+            <ul class="features">
+                <li *ngFor="let feature of plan.features">{{feature}}</li>
+            </ul>
+
+            <a routerLink="/payment" [queryParams]="{plan: plan.id}" class="btn w-100"
+                [class.btn-primary]="plan.isPopular" [class.btn-outline]="!plan.isPopular">
+                CHOOSE PLAN
+            </a>
+        </div>
+    </div>
+</div>

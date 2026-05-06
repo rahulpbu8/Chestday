@@ -1,0 +1,119 @@
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <span class="material-symbols-outlined">person</span>
+      <h2>Edit Member Profile</h2>
+    </div>
+
+    <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-section">
+          <h3>Personal Details</h3>
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">person</span>
+              <input type="text" id="name" formControlName="name" placeholder="e.g., John Doe">
+            </div>
+            <div class="error" *ngIf="memberForm.get('name')?.touched && memberForm.get('name')?.invalid">
+              Full name is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">mail</span>
+              <input type="email" id="email" formControlName="email" placeholder="e.g., john@example.com">
+            </div>
+            <div class="error" *ngIf="memberForm.get('email')?.touched && memberForm.get('email')?.invalid">
+              A valid email address is required
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">phone</span>
+              <input type="text" id="phone" formControlName="phone" placeholder="e.g., +1 234 567 8900">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Emergency Contact</h3>
+          <div class="form-group">
+            <label for="ecName">Contact Name</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">emergency</span>
+              <input type="text" id="ecName" formControlName="emergencyContactName" placeholder="e.g., Jane Doe">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ecPhone">Contact Phone</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">call</span>
+              <input type="text" id="ecPhone" formControlName="emergencyContactPhone"
+                placeholder="e.g., +1 098 765 4321">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Membership & Branch</h3>
+          <div class="form-group">
+            <label for="branch">Branch</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">location_on</span>
+              <select id="branch" formControlName="branchId">
+                <option [value]="null">Select a Branch</option>
+                <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.city }} - {{ branch.location }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="plan">Current Plan</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">payments</span>
+              <select id="plan" formControlName="planId">
+                <option [value]="null">No Plan Assigned</option>
+                <option *ngFor="let plan of plans" [value]="plan.id">{{ plan.name }} ({{ plan.price }})</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="expiry">Expiry Date</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">event</span>
+              <input type="date" id="expiry" formControlName="membershipExpiry">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="status">Membership Status</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">verified</span>
+              <select id="status" formControlName="membershipStatus">
+                <option value="active">ACTIVE</option>
+                <option value="expired">EXPIRED</option>
+                <option value="pending">PENDING</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="onCancel()" [disabled]="isLoading">CANCEL</button>
+        <button type="submit" class="btn-submit" [disabled]="memberForm.invalid || isLoading">
+          <span class="spinner" *ngIf="isLoading"></span>
+          UPDATE PROFILE
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

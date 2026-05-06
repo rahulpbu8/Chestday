@@ -1,0 +1,48 @@
+<div class="chatbot-wrapper" [class.open]="isOpen">
+  <!-- Floating Button -->
+  <button class="chat-fab" (click)="toggleChat()" [class.active]="isOpen">
+    <span class="material-icons" *ngIf="!isOpen">forum</span>
+    <span class="material-icons" *ngIf="isOpen">close</span>
+    <div class="pulse" *ngIf="!isOpen"></div>
+  </button>
+
+  <!-- Chat Window -->
+  <div class="chat-window" *ngIf="isOpen">
+    <div class="chat-header">
+      <div class="avatar">
+        <span class="material-icons">bolt</span>
+      </div>
+      <div class="header-info">
+        <h3>Aura AI</h3>
+        <p><span class="status-dot"></span> Online & Motivated</p>
+      </div>
+    </div>
+
+    <div class="message-container" #scrollMe>
+      <div *ngFor="let msg of messages" class="message-wrapper" [class.user]="msg.role === 'user'">
+        <div class="message-bubble">
+          {{ msg.text }}
+        </div>
+      </div>
+      <div *ngIf="isLoading" class="message-wrapper">
+        <div class="message-bubble loading">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <input 
+        type="text" 
+        [(ngModel)]="userInput" 
+        (keyup.enter)="sendMessage()" 
+        placeholder="Ask about branches, plans..."
+      >
+      <button (click)="sendMessage()" [disabled]="!userInput.trim() || isLoading">
+        <span class="material-icons">send</span>
+      </button>
+    </div>
+  </div>
+</div>

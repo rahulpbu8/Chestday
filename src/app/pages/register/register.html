@@ -1,0 +1,79 @@
+<div class="auth-page">
+    <div class="auth-card">
+        <h1 class="text-gradient">JOIN THE <span>TRIBE</span></h1>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-group">
+                <input type="text" formControlName="name" placeholder="Full Name"
+                    [ngClass]="{ 'is-invalid': submitted && f['name'].errors }">
+                <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                    <div *ngIf="f['name'].errors?.['required']">Name is required</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="email" formControlName="email" placeholder="Email address"
+                    [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+                <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                    <div *ngIf="f['email'].errors?.['required']">Email is required</div>
+                    <div *ngIf="f['email'].errors?.['email']">Email must be a valid email address</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="password" formControlName="password" placeholder="Password (Min 6 chars)"
+                    [class.is-invalid]="submitted && f['password'].errors">
+                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                    <div *ngIf="f['password'].errors?.['required']">Password is required</div>
+                    <div *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="text" formControlName="phone" placeholder="Phone Number"
+                    [class.is-invalid]="submitted && f['phone'].errors">
+                <div *ngIf="submitted && f['phone'].errors" class="invalid-feedback">
+                    <div *ngIf="f['phone'].errors?.['required']">Phone is required</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <input type="text" formControlName="emergencyContactName" placeholder="Emergency Contact Name"
+                        [class.is-invalid]="submitted && f['emergencyContactName'].errors">
+                    <div *ngIf="submitted && f['emergencyContactName'].errors" class="invalid-feedback">
+                        <div *ngIf="f['emergencyContactName'].errors?.['required']">Required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" formControlName="emergencyContactPhone" placeholder="Emergency Contact Phone"
+                        [class.is-invalid]="submitted && f['emergencyContactPhone'].errors">
+                    <div *ngIf="submitted && f['emergencyContactPhone'].errors" class="invalid-feedback">
+                        <div *ngIf="f['emergencyContactPhone'].errors?.['required']">Required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <select formControlName="branchId" [class.is-invalid]="submitted && f['branchId'].errors">
+                    <option [value]="null">Select Your Branch</option>
+                    <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.city }} - {{ branch.location
+                        }}</option>
+                </select>
+                <div *ngIf="submitted && f['branchId']?.errors" class="invalid-feedback">
+                    <div *ngIf="f['branchId']?.errors?.['required']">Please select a branch</div>
+                </div>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+            <button [disabled]="loading" class="btn btn-primary w-100">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                REGISTER
+            </button>
+        </form>
+
+        <p class="auth-footer">Already have an account? <a routerLink="/login">Login</a></p>
+    </div>
+</div>

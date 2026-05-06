@@ -1,0 +1,19 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="onCancel()" [@fade]>
+  <div class="modal-card" (click)="$event.stopPropagation()" [@scaleIn]>
+    <div class="modal-header" [ngClass]="config.type">
+      <span class="material-symbols-outlined">{{ getIcon() }}</span>
+      <h3>{{ config.title }}</h3>
+    </div>
+    <div class="modal-body">
+      <p>{{ config.message }}</p>
+    </div>
+    <div class="modal-footer">
+      <button *ngIf="config.cancelText !== ''" class="btn-cancel" (click)="onCancel()">
+        {{ config.cancelText || 'Cancel' }}
+      </button>
+      <button class="btn-confirm" [ngClass]="config.type" (click)="onConfirm()">
+        {{ config.confirmText || 'OK' }}
+      </button>
+    </div>
+  </div>
+</div>

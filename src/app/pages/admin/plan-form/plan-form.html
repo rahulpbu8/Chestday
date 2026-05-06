@@ -1,0 +1,92 @@
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <span class="material-symbols-outlined">{{ isEditMode ? 'edit_square' : 'add_circle' }}</span>
+      <h2>{{ isEditMode ? 'Edit' : 'Add New' }} Pricing Plan</h2>
+    </div>
+
+    <form [formGroup]="planForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Plan Name</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined">title</span>
+            <input type="text" id="name" formControlName="name" placeholder="e.g., MONTHLY">
+          </div>
+          <div class="error" *ngIf="planForm.get('name')?.touched && planForm.get('name')?.invalid">
+            Plan name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined">payments</span>
+            <input type="text" id="price" formControlName="price" placeholder="e.g., 1,500">
+          </div>
+          <div class="error" *ngIf="planForm.get('price')?.touched && planForm.get('price')?.invalid">
+            Price is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="period">Period</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined">schedule</span>
+            <input type="text" id="period" formControlName="period" placeholder="e.g., mo, 3mo, yr">
+          </div>
+          <div class="error" *ngIf="planForm.get('period')?.touched && planForm.get('period')?.invalid">
+            Period is required
+          </div>
+        </div>
+
+        <div class="form-group checkbox">
+          <label class="toggle-container">
+            <span class="material-symbols-outlined">workspace_premium</span>
+            <span>Mark as Popular</span>
+            <input type="checkbox" formControlName="isPopular">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="features-section">
+        <div class="section-header">
+          <h3>Plan Features</h3>
+          <button type="button" class="btn-add-feature" (click)="addFeature()" title="Add Feature">
+            <span class="material-symbols-outlined">add</span>
+            ADD FEATURE
+          </button>
+        </div>
+
+        <div formArrayName="features" class="features-list">
+          @for (feature of features.controls; track $index) {
+          <div class="feature-item">
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">check_circle</span>
+              <input type="text" [formControlName]="$index" placeholder="e.g., Access to all equipment">
+            </div>
+            <button type="button" class="btn-remove" (click)="removeFeature($index)" title="Remove Feature">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+          @if (features.at($index)?.touched && features.at($index)?.invalid) {
+          <div class="error feature-error">Feature content is required</div>
+          }
+          }
+        </div>
+        @if (features.length === 0) {
+        <div class="no-features-info">No features added. Click "ADD FEATURE" to start.</div>
+        }
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="onCancel()" [disabled]="isLoading">CANCEL</button>
+        <button type="submit" class="btn-submit" [disabled]="planForm.invalid || isLoading">
+          <span class="spinner" *ngIf="isLoading"></span>
+          {{ isEditMode ? 'UPDATE PLAN' : 'CREATE PLAN' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

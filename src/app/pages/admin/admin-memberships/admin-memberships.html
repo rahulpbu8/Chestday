@@ -1,0 +1,122 @@
+<div class="admin-dashboard">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="material-symbols-outlined">fitness_center</span>
+      <h2>CHEST DAY<span>{{ isEliteAdmin ? 'ELITE' : '' }} ADMIN</span></h2>
+    </div>
+
+    <nav>
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <span class="material-symbols-outlined">grid_view</span>
+        Products
+      </a>
+      <a routerLink="/admin/branches" routerLinkActive="active">
+        <span class="material-symbols-outlined">location_on</span>
+        Branches
+      </a>
+      <a routerLink="/admin/plans" routerLinkActive="active">
+        <span class="material-symbols-outlined">payments</span>
+        Plans
+      </a>
+      <a routerLink="/admin/memberships" routerLinkActive="active">
+        <span class="material-symbols-outlined">loyalty</span>
+        Memberships
+      </a>
+      <a routerLink="/admin/members" routerLinkActive="active">
+        <span class="material-symbols-outlined">group</span>
+        Members
+      </a>
+      <a routerLink="/admin/orders" routerLinkActive="active">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        Orders
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="active" *ngIf="isEliteAdmin">
+        <span class="material-symbols-outlined">manage_accounts</span>
+        Admins
+      </a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header>
+      <div class="search-bar">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" placeholder="Search memberships..." [(ngModel)]="searchTerm" (input)='onSearch()'>
+      </div>
+    </header>
+
+    <div class="table-card">
+      <div class="card-header-row">
+        <h2>Membership History</h2>
+      </div>
+
+      @if (isLoading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading membership records...</p>
+      </div>
+      } @else {
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Plan Chosen</th>
+            <th>Amount Paid</th>
+            <th>Expiry Date</th>
+            <th>Branch</th>
+            <th>Activation Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (ms of memberships; track ms.id) {
+          <tr>
+            <td>
+              <div class="member-info">
+                <div class="member-name">{{ ms.userName }}</div>
+                <div class="member-id">ID: {{ ms.userId.substring(0,8) }}</div>
+              </div>
+            </td>
+            <td>
+              <div class="plan-pill">
+                {{ ms.planName }}
+              </div>
+            </td>
+            <td>
+              <div class="amount-cell">
+                {{ ms.amount | currency:'INR' }}
+              </div>
+            </td>
+            <td>
+              <div class="date-cell">
+                {{ ms.expiryDate | date:'mediumDate' }}
+              </div>
+            </td>
+            <td>
+              <div class="branch-pill">
+                <span class="material-symbols-outlined">location_on</span>
+                {{ ms.branchName }}
+              </div>
+            </td>
+            <td>
+              <div class="date-cell secondary">
+                {{ ms.activatedAt | date:'medium' }}
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (memberships.length === 0) {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">history</span>
+        <p>No membership activations found.</p>
+      </div>
+      }
+
+      <app-pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
+        (pageChange)="onPageChange($event)"></app-pagination>
+      }
+    </div>
+  </main>
+</div>

@@ -1,0 +1,172 @@
+.page-header {
+    padding: 6rem 0 3rem;
+    background: radial-gradient(circle at center, rgba(5, 5, 5, 0.7) 0%, rgba(5, 5, 5, 0.95) 100%), url('../../../assets/images/hero.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    text-align: center;
+
+    h1 {
+        font-size: 3.5rem;
+        text-transform: uppercase;
+
+        span {
+            color: var(--primary);
+        }
+    }
+}
+
+.contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding: 2rem 0;
+
+    .contact-info {
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+
+            span {
+                color: var(--primary);
+            }
+        }
+
+        p.desc {
+            color: var(--text-gray);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .info-item {
+            margin-bottom: var(--spacing-lg);
+
+            h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.5rem;
+                color: var(--primary);
+            }
+
+            p {
+                color: var(--text-light);
+                font-size: 1.1rem;
+            }
+
+            .contact-link {
+                transition: color 0.3s ease;
+                &:hover {
+                    color: var(--primary);
+                }
+            }
+
+            .whatsapp-btn {
+                margin-top: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+                border-color: #25D366;
+                color: #25D366;
+
+                &:hover {
+                    background-color: #25D366;
+                    color: white;
+                }
+
+                .whatsapp-icon {
+                    margin-right: 8px;
+                }
+            }
+        }
+    }
+
+    .contact-form-card {
+        background: var(--bg-card);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border: 1px solid var(--bg-card-border);
+        padding: var(--spacing-xl);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+
+        .alert-success {
+            text-align: center;
+            padding: var(--spacing-lg) 0;
+
+            h3 {
+                color: var(--primary);
+                margin-bottom: 1rem;
+            }
+
+            p {
+                margin-bottom: 2rem;
+                line-height: 1.6;
+            }
+
+            .button-group {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+            }
+        }
+
+        form {
+            .form-group {
+                margin-bottom: 1.5rem;
+
+                label {
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    font-weight: 500;
+                    color: var(--text-gray);
+                }
+
+                input,
+                textarea {
+                    width: 100%;
+                    background: var(--bg-input);
+                    border: 1px solid var(--border-color);
+                    border-radius: var(--radius-md);
+                    padding: 0.85rem;
+                    color: var(--text-light);
+                    font-family: var(--font-main);
+                    transition: all 0.3s ease;
+
+                    &:focus {
+                        outline: none;
+                        border-color: var(--primary);
+                        box-shadow: 0 0 0 2px var(--primary-glow);
+                    }
+
+                    &.is-invalid {
+                        border-color: #ff4d4d;
+                    }
+                }
+            }
+
+            .form-note {
+                text-align: center;
+                font-size: 0.85rem;
+                color: var(--text-gray);
+                margin-top: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .mt-2 {
+                margin-top: 0.5rem;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+    }
+}

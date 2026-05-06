@@ -1,0 +1,46 @@
+<div class="admin-login-container">
+  <div class="login-card">
+    <div class="header">
+      <span class="material-symbols-outlined logo-icon">admin_panel_settings</span>
+      <h1>CHEST DAY <span>ADMIN</span></h1>
+      <p>Secure Management Portal</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div class="input-wrapper">
+          <span class="material-symbols-outlined">mail</span>
+          <input type="email" id="email" formControlName="email" placeholder="admin@chestday.com">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <span class="material-symbols-outlined">lock</span>
+          <input type="password" id="password" formControlName="password" placeholder="••••••••">
+        </div>
+      </div>
+
+      @if (error) {
+        <div class="error-message">
+          <span class="material-symbols-outlined">warning</span>
+          {{ error }}
+        </div>
+      }
+
+      <button type="submit" [disabled]="loginForm.invalid || isLoading" class="btn-primary">
+        @if (isLoading) {
+          <span class="loader"></span>
+        } @else {
+          LOGIN TO DASHBOARD
+        }
+      </button>
+    </form>
+    
+    <div class="footer">
+      <p>&copy; 2026 Chest Day Gym. Industrial Strength Security.</p>
+    </div>
+  </div>
+</div>

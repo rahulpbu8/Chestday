@@ -1,0 +1,299 @@
+<div class="profile-container" *ngIf="!isLoading">
+  <div class="profile-header">
+    <div class="user-main">
+      <div class="avatar">
+        {{ user?.name?.charAt(0).toUpperCase() }}
+      </div>
+      <div class="user-info">
+        <h1>Welcome, <span class="highlight">{{ user?.name }}</span></h1>
+        <p class="email">{{ user?.email }}</p>
+        <div class="badges">
+          <span class="badge" [class.active]="user?.membershipStatus === 'active'"
+            [class.expired]="user?.membershipStatus === 'expired'">
+            {{ user?.membershipStatus?.toUpperCase() }} MEMBERSHIP
+          </span>
+          <span class="badge branch" *ngIf="user?.branch">
+            <span class="material-symbols-outlined">location_on</span>
+            {{ user?.branch?.city }} - {{ user?.branch?.location }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-logout" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span>
+        Logout
+      </button>
+    </div>
+  </div>
+
+  <div class="profile-content">
+    <!-- Sidebar / Tabs -->
+    <div class="profile-sidebar">
+      <nav class="tabs">
+        <button [class.active]="activeTab === 'dashboard'" (click)="setTab('dashboard')">
+          <span class="material-symbols-outlined">dashboard</span>
+          Dashboard
+        </button>
+        <button [class.active]="activeTab === 'membership'" (click)="setTab('membership')">
+          <span class="material-symbols-outlined">card_membership</span>
+          Membership
+        </button>
+        <button [class.active]="activeTab === 'orders'" (click)="setTab('orders')">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          Orders
+        </button>
+        <button [class.active]="activeTab === 'addresses'" (click)="setTab('addresses')">
+          <span class="material-symbols-outlined">location_on</span>
+          Addresses
+        </button>
+        <button [class.active]="activeTab === 'settings'" (click)="setTab('settings')">
+          <span class="material-symbols-outlined">settings</span>
+          Settings
+        </button>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="profile-main-view">
+
+      <!-- Dashboard Tab -->
+      <div *ngIf="activeTab === 'dashboard'" class="tab-panel dashboard-panel animate-in">
+        <div class="dashboard-grid">
+          <!-- Membership Snapshot -->
+          <div class="dash-card membership-card">
+            <div class="card-header">
+              <h3>Current Membership</h3>
+              <button class="btn-text" (click)="setTab('membership')">Details</button>
+            </div>
+            <div class="card-content">
+              <div class="plan-info" *ngIf="user?.currentPlan">
+                <p class="plan-name">{{ user?.currentPlan?.name }}</p>
+                <div class="expiry-counter">
+                  <span class="days">{{ daysRemaining }}</span>
+                  <span class="label">Days Remaining</span>
+                </div>
+                <div class="expiry-date">Expires: {{ user?.membershipExpiry | date:'MMM d, y' }}</div>
+              </div>
+              <div class="no-plan" *ngIf="!user?.currentPlan">
+                <p>No active membership plan.</p>
+                <button class="btn-primary" (click)="router.navigate(['/pricing'])">Choose a Plan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- QR Check-in -->
+          <div class="dash-card qr-card" *ngIf="user?.membershipStatus === 'active'">
+            <div class="card-header">
+              <h3>Check-in: {{ user?.branch?.city }}</h3>
+            </div>
+            <div class="card-content">
+              <div class="qr-placeholder">
+                <div class="qr-code">
+                  <!-- Simplified QR representation -->
+                  <div class="qr-inner">
+                    <span class="material-symbols-outlined">qr_code_2</span>
+                  </div>
+                </div>
+                <p class="qr-id">{{ qrCodeValue }}</p>
+              </div>
+              <p class="qr-hint">Scan this at the reception desk to check in.</p>
+            </div>
+          </div>
+
+          <!-- Latest Order -->
+          <div class="dash-card order-snapshot">
+            <div class="card-header">
+              <h3>Latest Order</h3>
+              <button class="btn-text" (click)="setTab('orders')">View All</button>
+            </div>
+            <div class="card-content">
+              <div *ngIf="orders.length > 0" class="order-item">
+                <div class="order-id">#{{ orders[0].id.substring(0, 8).toUpperCase() }}</div>
+                <div class="order-status" [class]="orders[0].status">
+                  {{ orders[0].status?.toUpperCase() }}
+                </div>
+                <div class="order-total">{{ orders[0].totalAmount | currency:'INR' }}</div>
+                <div class="order-date">{{ orders[0].createdAt | date }}</div>
+              </div>
+              <div *ngIf="orders.length === 0" class="empty-state">
+                No orders yet.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Membership Tab -->
+      <div *ngIf="activeTab === 'membership'" class="tab-panel membership-details animate-in">
+        <h2>Membership Details</h2>
+        <div class="details-container card-glass" *ngIf="user?.currentPlan">
+          <div class="plan-headline">
+            <div class="headline-text">
+              <h3>{{ user?.currentPlan?.name }} Plan</h3>
+              <p>Purchased on {{ user?.membershipExpiry | date:'MMM d, y' }} (Expiry)</p>
+            </div>
+            <div class="status-indicator" [class.active]="user?.membershipStatus === 'active'">
+              {{ user?.membershipStatus?.toUpperCase() }}
+            </div>
+          </div>
+          <div class="benefits-grid">
+            <div class="benefit" *ngFor="let benefit of user?.currentPlan?.features">
+              <span class="material-symbols-outlined check">check_circle</span>
+              {{ benefit }}
+            </div>
+          </div>
+          <div class="plan-actions">
+            <button class="btn-primary" (click)="router.navigate(['/pricing'])">Change / Upgrade Plan</button>
+            <button class="btn-outline" (click)="router.navigate(['/pricing'])" *ngIf="user?.membershipStatus === 'expired'">Renew Membership</button>
+          </div>
+        </div>
+
+        <!-- Available Upgrades Section -->
+        <div class="available-upgrades-section animate-in" *ngIf="availableUpgrades.length > 0">
+          <div class="section-title">
+            <span class="material-symbols-outlined">upgrade</span>
+            <h3>Pending Upgrades</h3>
+          </div>
+          <div class="upgrade-card card-glass" *ngFor="let upg of availableUpgrades">
+            <div class="upgrade-info">
+              <h4>{{ upg.plan?.name }} Plan</h4>
+              <p>Purchased on {{ upg.createdAt | date:'MMM d, y' }}</p>
+            </div>
+            <div class="upgrade-action">
+              <button class="btn-primary" (click)="activatePlan(upg.id)" [disabled]="isLoading">
+                <span class="spinner-border spinner-border-sm" *ngIf="isLoading"></span>
+                {{ isLoading ? 'Activating...' : 'Activate Now' }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="no-plan-full card-glass" *ngIf="!user?.currentPlan">
+          <span class="material-symbols-outlined large-icon">error</span>
+          <p>You don't have an active membership plan.</p>
+          <button class="btn-primary" (click)="router.navigate(['/pricing'])">View Pricing Plans</button>
+        </div>
+      </div>
+
+      <!-- Orders Tab -->
+      <div *ngIf="activeTab === 'orders'" class="tab-panel orders-panel animate-in">
+        <h2>Order History</h2>
+        <div class="orders-list">
+          <div class="order-card card-glass" *ngFor="let order of orders">
+            <div class="card-top">
+              <div class="order-info">
+                <span class="order-num">Order #{{ order.id.substring(0, 8).toUpperCase() }}</span>
+                <span class="order-date">{{ order.createdAt | date:'mediumDate' }}</span>
+              </div>
+              <div class="order-status" [class]="order.status">{{ order.status?.toUpperCase() }}</div>
+            </div>
+            <div class="card-body">
+              <div class="items-preview">
+                <div class="item" *ngFor="let item of order.items">
+                  {{ item.product?.name }} x {{ item.quantity }}
+                </div>
+              </div>
+              <div class="total-row">
+                <span>Total Amount:</span>
+                <span class="price-total">{{ order.totalAmount | currency:'INR' }}</span>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn-text">View Invoice</button>
+              <button class="btn-secondary small">Track Order</button>
+            </div>
+          </div>
+          <div *ngIf="orders.length === 0" class="empty-orders-full card-glass">
+            <span class="material-symbols-outlined large-icon">shopping_cart_off</span>
+            <p>You haven't placed any orders yet.</p>
+            <button class="btn-primary" (click)="router.navigate(['/shop'])">Go to Shop</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Addresses Tab -->
+      <div *ngIf="activeTab === 'addresses'" class="tab-panel addresses-panel animate-in">
+        <div class="panel-header-row">
+          <h2>Your Addresses</h2>
+          <button class="btn-primary small" (click)="router.navigate(['/checkout'])">Add New Address</button>
+        </div>
+        <div class="address-grid">
+          <div class="address-card card-glass" *ngFor="let addr of addresses" [class.is-default]="addr.isDefault">
+            <div class="card-content">
+              <div class="name-row">
+                <strong>{{ addr.fullName }}</strong>
+                <span class="default-badge" *ngIf="addr.isDefault">DEFAULT</span>
+              </div>
+              <p>{{ addr.addressLine1 }}, {{ addr.addressLine2 ? addr.addressLine2 + ',' : '' }}</p>
+              <p>{{ addr.city }}, {{ addr.state }} - {{ addr.zipCode }}</p>
+              <p class="phone">Phone: {{ addr.phone }}</p>
+            </div>
+            <div class="card-actions">
+              <button class="btn-icon"><span class="material-symbols-outlined">edit</span></button>
+              <button class="btn-icon danger"><span class="material-symbols-outlined">delete</span></button>
+            </div>
+          </div>
+          <div *ngIf="addresses.length === 0" class="empty-state-full card-glass">
+            <span class="material-symbols-outlined large-icon">location_off</span>
+            <p>No addresses saved yet.</p>
+            <button class="btn-primary" (click)="router.navigate(['/checkout'])">Add Your First Address</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Tab -->
+      <div *ngIf="activeTab === 'settings'" class="tab-panel settings-panel animate-in">
+        <h2>Account Settings</h2>
+        <div class="settings-grid">
+          <div class="settings-section card-glass">
+            <h3>Personal Information</h3>
+            <div class="info-row">
+              <label>Full Name</label>
+              <p>{{ user?.name }}</p>
+            </div>
+            <div class="info-row">
+              <label>Email Address</label>
+              <p>{{ user?.email }}</p>
+            </div>
+            <div class="info-row">
+              <label>Home Branch</label>
+              <ng-container *ngIf="user?.branch">
+                <p>{{ user?.branch?.city }} - {{ user?.branch?.location }}</p>
+              </ng-container>
+              <ng-container *ngIf="!user?.branch">
+                <p>Not assigned</p>
+              </ng-container>
+            </div>
+            <button class="btn-outline small">Update Info</button>
+          </div>
+
+          <div class="settings-section card-glass">
+            <h3>Emergency Contact</h3>
+            <div class="info-row">
+              <label>Contact Name</label>
+              <p>{{ user?.emergencyContactName || 'Not added' }}</p>
+            </div>
+            <div class="info-row">
+              <label>Contact Phone</label>
+              <p>{{ user?.emergencyContactPhone || 'Not added' }}</p>
+            </div>
+            <button class="btn-outline small">Update Emergency Info</button>
+          </div>
+
+          <div class="settings-section card-glass">
+            <h3>Security</h3>
+            <p>Keep your account secure by managing your password and login options.</p>
+            <button class="btn-outline small">Change Password</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="loading-full" *ngIf="isLoading">
+  <div class="spinner"></div>
+  <p>Loading your profile...</p>
+</div>

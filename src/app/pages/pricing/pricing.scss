@@ -1,0 +1,103 @@
+.page-header {
+    padding: 6rem 0 3rem;
+    background: radial-gradient(circle at center, rgba(5, 5, 5, 0.7) 0%, rgba(5, 5, 5, 0.95) 100%), url('../../../assets/images/hero.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    text-align: center;
+
+    h1 {
+        font-size: 3.5rem;
+        text-transform: uppercase;
+
+        span {
+            color: var(--primary);
+        }
+    }
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: stretch;
+
+    .price-card {
+        background: var(--bg-card);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        padding: 3rem 2rem;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--bg-card-border);
+        text-align: center;
+        position: relative;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        &:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-glow);
+            z-index: 2;
+        }
+
+        &.popular {
+            border-color: var(--primary);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: var(--bg-dark);
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            z-index: 3;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+
+            span {
+                font-size: 1rem;
+                color: var(--text-gray);
+                font-weight: 400;
+            }
+        }
+
+        .features {
+            margin-bottom: 2rem;
+            text-align: left;
+
+            li {
+                margin-bottom: 0.75rem;
+                color: var(--text-gray);
+            }
+        }
+
+        .btn {
+            width: 100%;
+            margin-top: auto;
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    .pricing-grid .price-card.popular {
+        transform: scale(1);
+    }
+}

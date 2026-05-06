@@ -1,0 +1,16 @@
+<ng-container *ngIf="showLayout()">
+  <app-navbar></app-navbar>
+</ng-container>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<ng-container *ngIf="showLayout()">
+  <app-footer></app-footer>
+</ng-container>
+
+<app-modal></app-modal>
+@if (showChatbot()) {
+  <app-chatbot></app-chatbot>
+}

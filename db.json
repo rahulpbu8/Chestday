@@ -1,0 +1,253 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin User",
+      "email": "admin@chestday.com",
+      "password": "password123"
+    },
+    {
+      "name": "rahul",
+      "email": "rahulpbu@gmail.com",
+      "password": "123456",
+      "id": "tM7A33j"
+    }
+  ],
+  "branches": [
+    {
+      "id": "1",
+      "city": "Kochi",
+      "location": "Edappally Bypass",
+      "phone": "+91 98765 43210",
+      "locationLink": "https://maps.app.goo.gl/kochi"
+    },
+    {
+      "id": "2",
+      "city": "Trivandrum",
+      "location": "Kowdiar Avenue",
+      "phone": "+91 98765 43211",
+      "locationLink": "https://maps.app.goo.gl/trivandrum"
+    },
+    {
+      "id": "3",
+      "city": "Calicut",
+      "location": "Mavoor Road",
+      "phone": "+91 98765 43212",
+      "locationLink": "https://maps.app.goo.gl/calicut"
+    },
+    {
+      "id": "4",
+      "city": "Trissur",
+      "location": "MG Road",
+      "phone": "+91 98765 43213",
+      "locationLink": "https://maps.app.goo.gl/trissur"
+    }
+  ],
+  "pricingPlans": [
+    {
+      "id": "1",
+      "name": "MONTHLY",
+      "price": "1,500",
+      "period": "mo",
+      "features": [
+        "✅ Access to all equipment",
+        "✅ Cardio zone",
+        "✅ Locker facility",
+        "❌ Personal training"
+      ],
+      "isPopular": false
+    },
+    {
+      "id": "2",
+      "name": "QUARTERLY",
+      "price": "4,000",
+      "period": "3mo",
+      "features": [
+        "✅ Access to all equipment",
+        "✅ Cardio zone",
+        "✅ Locker facility",
+        "✅ 2 Personal training sessions"
+      ],
+      "isPopular": true
+    },
+    {
+      "id": "3",
+      "name": "YEARLY",
+      "price": "12,000",
+      "period": "yr",
+      "features": [
+        "✅ Access to all equipment",
+        "✅ Cardio zone",
+        "✅ Locker facility",
+        "✅ Monthly guidance"
+      ],
+      "isPopular": false
+    }
+  ],
+  "contacts": [
+    {
+      "name": "Rahulk",
+      "email": "rahulpbu@gmail.com",
+      "message": "trvtvv",
+      "id": 1
+    },
+    {
+      "name": "sss",
+      "email": "rahul@seeroo.com",
+      "message": "is it open now? the chest day gym?",
+      "id": 2
+    },
+    {
+      "name": "Appu",
+      "email": "appu@gmail.com",
+      "message": "Enik Gym il povan pattumoo broo?",
+      "id": 3
+    },
+    {
+      "name": "edaan",
+      "email": "rahulpbu@gmail.com",
+      "message": "t5h5thyhy6hy6hyhy6h",
+      "id": 4
+    }
+  ],
+  "payments": [
+    {
+      "userId": "tM7A33j",
+      "userName": "rahul",
+      "planId": "1",
+      "planName": "MONTHLY",
+      "amount": "1,500",
+      "method": "upi",
+      "date": "2026-03-18T11:59:55.264Z",
+      "id": 1
+    },
+    {
+      "userId": "tM7A33j",
+      "userName": "rahul",
+      "planId": "1",
+      "planName": "MONTHLY",
+      "amount": "1,500",
+      "method": "upi",
+      "date": "2026-03-25T11:16:02.399Z",
+      "id": 2
+    },
+    {
+      "userId": "tM7A33j",
+      "userName": "rahul",
+      "planId": "2",
+      "planName": "QUARTERLY",
+      "amount": "4,000",
+      "method": "card",
+      "date": "2026-03-25T11:16:13.212Z",
+      "id": 3
+    },
+    {
+      "userId": "tM7A33j",
+      "userName": "rahul",
+      "planId": "2",
+      "planName": "QUARTERLY",
+      "amount": "4,000",
+      "method": "upi",
+      "date": "2026-03-26T11:27:13.627Z",
+      "id": 4
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Dumbbell Set",
+      "description": "High-quality rubber-coated dumbbells ranging from 2.5kg to 25kg. Perfect for all fitness levels.",
+      "price": "4,999",
+      "category": "Gym Equipments",
+      "image": "https://images.unsplash.com/photo-1586401100295-7a8096fd231a?q=80&w=500&auto=format&fit=crop"
+    },
+    {
+      "id": "2",
+      "name": "Olympic Barbell",
+      "description": "Professional 7ft Olympic Barbell with a 20kg weight capacity and chrome finish.",
+      "price": "3,499",
+      "category": "Gym Equipments",
+      "image": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=500&auto=format&fit=crop"
+    },
+    {
+      "id": "3",
+      "name": "Weightlifting Belt",
+      "description": "Durable leather belt for maximum support during heavy lifts. Quick-release buckle.",
+      "price": "1,299",
+      "category": "Gym Equipments",
+      "image": "https://images.unsplash.com/photo-1590487988256-9ed24133863e?q=80&w=500&auto=format&fit=crop"
+    },
+    {
+      "id": "4",
+      "name": "Resistance Bands",
+      "description": "Set of 5 premium latex bands for warm-ups, stretching, and mobility work.",
+      "price": "799",
+      "category": "Gym Equipments",
+      "image": "/assets/images/shop/resistance_bands.png"
+    },
+    {
+      "id": "5",
+      "name": "Medicine Ball",
+      "description": "Durable rubber medicine ball for explosive power and core training (5kg).",
+      "price": "1,599",
+      "category": "Gym Equipments",
+      "image": "https://images.unsplash.com/photo-1544033527-b192daee1f5b?q=80&w=500&auto=format&fit=crop"
+    },
+    {
+      "id": "6",
+      "name": "Speed Skipping Cable",
+      "description": "Adjustable speed rope with ball bearings for smooth, fast rotations.",
+      "price": "499",
+      "category": "Gym Equipments",
+      "image": "https://images.unsplash.com/photo-1434608519344-49d77a699e1d?q=80&w=500&auto=format&fit=crop"
+    },
+    {
+      "id": "7",
+      "name": "Whey Protein Isolate",
+      "description": "24g of pure protein per scoop. Fast-absorbing and low in carbs. Chocolate flavor.",
+      "price": "3,199",
+      "category": "Supplements",
+      "image": "/assets/images/shop/whey_protein.png"
+    },
+    {
+      "id": "8",
+      "name": "Creatine Monohydrate",
+      "description": "Micronized creatine powder for increased strength and better muscle recovery.",
+      "price": "899",
+      "category": "Supplements",
+      "image": "https://images.unsplash.com/photo-1579722820308-d74e571900a9?q=80&w=500&auto=format&fit=crop"
+    },
+    {
+      "id": "9",
+      "name": "Omega-3 Fish Oil",
+      "description": "High-potency EPA/DHA for joint health and inflammation support. 60 Softgels.",
+      "price": "649",
+      "category": "Supplements",
+      "image": "/assets/images/shop/fish_oil.png"
+    },
+    {
+      "id": "10",
+      "name": "Daily Multivitamin",
+      "description": "Comprehensive blend of 20+ essential vitamins and minerals for active lifestyles.",
+      "price": "549",
+      "category": "Supplements",
+      "image": "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=500&auto=format&fit=crop"
+    },
+    {
+      "id": "11",
+      "name": "L-Glutamine Powder",
+      "description": "Supports muscle recovery and gut health. Unflavored, easy to mix.",
+      "price": "1,099",
+      "category": "Supplements",
+      "image": "/assets/images/shop/glutamine.png"
+    },
+    {
+      "id": "12",
+      "name": "Magnesium Complex",
+      "description": "Essential mineral for muscle relaxation and improved sleep quality.",
+      "price": "449",
+      "category": "Supplements",
+      "image": "/assets/images/shop/magnesium.png"
+    }
+  ]
+}

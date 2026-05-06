@@ -1,0 +1,105 @@
+<div class="admin-dashboard">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="material-symbols-outlined">fitness_center</span>
+      <h2>CHEST DAY<span>{{ isEliteAdmin ? 'ELITE' : '' }} ADMIN</span></h2>
+    </div>
+
+    <nav>
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <span class="material-symbols-outlined">grid_view</span>
+        Products
+      </a>
+      <a routerLink="/admin/branches" routerLinkActive="active">
+        <span class="material-symbols-outlined">location_on</span>
+        Branches
+      </a>
+      <a routerLink="/admin/plans" routerLinkActive="active">
+        <span class="material-symbols-outlined">payments</span>
+        Plans
+      </a>
+      <a routerLink="/admin/memberships" routerLinkActive="active">
+        <span class="material-symbols-outlined">loyalty</span>
+        Memberships
+      </a>
+      <a routerLink="/admin/members" routerLinkActive="active">
+        <span class="material-symbols-outlined">group</span>
+        Members
+      </a>
+      <a routerLink="/admin/orders" routerLinkActive="active">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        Orders
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="active" *ngIf="isEliteAdmin">
+        <span class="material-symbols-outlined">manage_accounts</span>
+        Admins
+      </a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header>
+      <div class="search-bar">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" placeholder="Search branches..." [(ngModel)]="searchTerm" (input)="onSearch()">
+      </div>
+
+      <div class="header-actions">
+        <button routerLink="/admin/branches/new" class="btn-add">
+          <span class="material-symbols-outlined">add</span>
+          ADD BRANCH
+        </button>
+      </div>
+    </header>
+
+    <div class="table-card">
+      @if (isLoading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading branches...</p>
+      </div>
+      } @else {
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Location</th>
+            <th>Phone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (branch of branches; track branch.id) {
+          <tr>
+            <td>
+              <div class="branch-name">{{ branch.city }}</div>
+            </td>
+            <td>{{ branch.location }}</td>
+            <td>{{ branch.phone }}</td>
+            <td class="actions">
+              <button (click)="onEdit(branch.id)" class="btn-icon edit" title="Edit">
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button (click)="onDelete(branch.id)" class="btn-icon delete" title="Delete">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (branches.length === 0) {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">location_off</span>
+        <p>No branches found matching your search.</p>
+      </div>
+      }
+
+      <!-- Pagination -->
+      <app-pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
+        (pageChange)="onPageChange($event)"></app-pagination>
+      }
+    </div>
+  </main>
+</div>

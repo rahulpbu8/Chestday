@@ -1,0 +1,195 @@
+<div class="checkout-container">
+  <div class="checkout-header">
+    <h1><span class="highlight">SECURE</span> CHECKOUT</h1>
+    <div class="stepper">
+      <div class="step-item" [class.active]="step >= 1">1. Address</div>
+      <div class="step-item" [class.active]="step >= 2">2. Review</div>
+      <div class="step-item" [class.active]="step >= 3">3. Payment</div>
+    </div>
+  </div>
+
+  <div class="checkout-content">
+    <!-- Step 1: Address Selection / Form -->
+    <div *ngIf="step === 1" class="step-panel address-step">
+      <div class="panel-header">
+        <h2>SHIPPING DETAILS</h2>
+        <button *ngIf="addresses.length > 0 && !showAddressForm && !isLoadingAddresses" (click)="showAddressForm = true" class="btn-secondary small">
+          Add New Address
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoadingAddresses" class="loading-state">
+        <div class="spinner"></div>
+        <p>Fetching your saved addresses...</p>
+      </div>
+
+      <div *ngIf="!isLoadingAddresses && !showAddressForm && addresses.length > 0" class="address-list">
+        <div *ngFor="let addr of addresses" 
+             class="address-card" 
+             [class.selected]="selectedAddressId === addr.id"
+             (click)="selectAddress(addr.id)">
+          <div class="card-title">{{ addr.fullName }} <span *ngIf="addr.isDefault" class="badge">Default</span></div>
+          <div class="card-details">
+            {{ addr.addressLine1 }}, {{ addr.addressLine2 ? addr.addressLine2 + ',' : '' }}<br>
+            {{ addr.city }}, {{ addr.state }} - {{ addr.zipCode }}<br>
+            Phone: {{ addr.phone }}
+          </div>
+          <div class="selection-indicator">
+            <span class="material-symbols-outlined">{{ selectedAddressId === addr.id ? 'check_circle' : 'radio_button_unchecked' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!isLoadingAddresses && (showAddressForm || addresses.length === 0)" class="address-form-container">
+        <form [formGroup]="addressForm" (ngSubmit)="saveAddress()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" formControlName="fullName" placeholder="John Doe">
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="text" formControlName="phone" placeholder="10-digit number">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Address Line 1</label>
+            <input type="text" formControlName="addressLine1" placeholder="House #, Street name">
+          </div>
+
+          <div class="form-group">
+            <label>Address Line 2 (Optional)</label>
+            <input type="text" formControlName="addressLine2" placeholder="Apartment, Landmark">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" formControlName="city" placeholder="City">
+            </div>
+            <div class="form-group">
+              <label>State</label>
+              <input type="text" formControlName="state" placeholder="State">
+            </div>
+            <div class="form-group">
+              <label>Zip Code</label>
+              <input type="text" formControlName="zipCode" placeholder="6-digit zip">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button *ngIf="addresses.length > 0" type="button" class="btn-text" (click)="showAddressForm = false">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="addressForm.invalid || isProcessing">
+              {{ isProcessing ? 'Saving...' : 'Save & Continue' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="!showAddressForm" class="step-actions">
+        <button class="btn-primary large" (click)="nextStep()" [disabled]="!selectedAddressId">
+          Proceed to Order Review
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: Order Review -->
+    <div *ngIf="step === 2" class="step-panel review-step">
+      <div class="panel-header">
+        <h2>REVIEW YOUR ORDER</h2>
+        <button (click)="prevStep()" class="btn-text">Edit Address</button>
+      </div>
+
+      <div class="order-summary-grid">
+        <div class="items-list">
+          <div *ngFor="let item of cartItems" class="order-item">
+            <img [src]="item.image" [alt]="item.name">
+            <div class="item-info">
+              <h3>{{ item.name }}</h3>
+              <p>Quantity: {{ item.quantity }}</p>
+              <p class="price">₹{{ item.price | number:'1.2-2' }} x {{ item.quantity }}</p>
+            </div>
+            <div class="item-total">₹{{ (item.price * item.quantity) | number:'1.2-2' }}</div>
+          </div>
+        </div>
+
+        <div class="cost-summary">
+          <div class="summary-card">
+            <h3>Payment Summary</h3>
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span>₹{{ subtotal | number:'1.2-2' }}</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span>{{ shipping === 0 ? 'FREE' : '₹' + (shipping | number:'1.2-2') }}</span>
+            </div>
+            <div class="summary-row">
+              <span>Tax (GST 18%)</span>
+              <span>₹{{ tax | number:'1.2-2' }}</span>
+            </div>
+            <hr>
+            <div class="summary-row total">
+              <span>Grand Total</span>
+              <span>₹{{ total | number:'1.2-2' }}</span>
+            </div>
+            <button class="btn-primary large full-width" (click)="nextStep()" [disabled]="isProcessing">
+              Proceed to Payment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Payment Mockup -->
+    <div *ngIf="step === 3" class="step-panel payment-step">
+      <div class="panel-header">
+        <h2>SECURE PAYMENT</h2>
+        <button (click)="prevStep()" class="btn-text">Back to Review</button>
+      </div>
+
+      <div class="payment-mockup">
+        <div class="payment-card">
+          <div class="card-header">
+            <h3>SELECT PAYMENT METHOD</h3>
+          </div>
+          <div class="methods">
+            <div class="method active">
+              <span class="material-symbols-outlined">credit_card</span>
+              <span>Credit / Debit Card</span>
+            </div>
+            <div class="method disabled">
+              <span class="material-symbols-outlined">account_balance</span>
+              <span>Net Banking (Soon)</span>
+            </div>
+            <div class="method disabled">
+              <span class="material-symbols-outlined">smartphone</span>
+              <span>UPI / QR (Soon)</span>
+            </div>
+          </div>
+
+          <div class="card-form-mock">
+            <div class="mock-input">Card Number: **** **** **** 4242</div>
+            <div class="mock-row">
+              <div class="mock-input">Exp: 12/28</div>
+              <div class="mock-input">CVV: ***</div>
+            </div>
+          </div>
+
+          <div class="payment-info">
+            <p>You are paying <strong>₹{{ total | number:'1.2-2' }}</strong> for your order.</p>
+            <p class="disclaimer">This is a secure mockup. Clicking pay will complete your order and reduce stock.</p>
+          </div>
+
+          <button class="btn-primary large full-width" (click)="placeOrder()" [disabled]="isProcessing">
+            <span class="material-symbols-outlined">lock</span>
+            <ng-container *ngIf="isProcessing">Processing Transaction...</ng-container>
+            <ng-container *ngIf="!isProcessing">Pay ₹{{ total | number:'1.2-2' }}</ng-container>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

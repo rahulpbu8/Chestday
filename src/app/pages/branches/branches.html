@@ -1,0 +1,21 @@
+<div class="page-header">
+    <h1 class="text-gradient">OUR <span>BRANCHES</span></h1>
+</div>
+
+<div class="container section">
+    <div *ngIf="loading" class="text-center w-100">
+        <span class="spinner-border text-primary"></span>
+    </div>
+
+    <div class="branches-grid" *ngIf="!loading">
+        <div class="branch-card" *ngFor="let branch of branches">
+            <h3>{{ branch.city }}</h3>
+            <p class="location">{{ branch.location }}</p>
+            <p class="phone"><span class="material-symbols-outlined">call</span> {{ branch.phone }}</p>
+            <a [href]="branch.locationLink" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">View Map</a>
+        </div>
+    </div>
+    <div *ngIf="!loading && branches.length === 0" class="text-center">
+        <p>No branches found.</p>
+    </div>
+</div>

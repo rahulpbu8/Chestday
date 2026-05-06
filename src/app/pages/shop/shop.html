@@ -1,0 +1,71 @@
+<div class="page-header">
+    <h1 class="text-gradient">SHOP FROM <span>CHEST DAY</span></h1>
+</div>
+
+<div class="container section">
+    <!-- Category Selection -->
+    <div class="category-tabs">
+        <div class="category-card" [class.active]="selectedCategory === 'Gym Equipments'"
+            (click)="filterByCategory('Gym Equipments')">
+            <div class="icon">
+                <span class="material-symbols-outlined">fitness_center</span>
+            </div>
+            <h3>Gym Equipments</h3>
+            <p>Gear up for strength</p>
+        </div>
+        <div class="category-card" [class.active]="selectedCategory === 'Supplements'"
+            (click)="filterByCategory('Supplements')">
+            <div class="icon">
+                <span class="material-symbols-outlined">medication</span>
+            </div>
+            <h3>Supplements</h3>
+            <p>Fuel your performance</p>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center w-100 py-5">
+        <span class="spinner-border text-primary"></span>
+        <p class="mt-2 text-gray">Loading products...</p>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" *ngIf="!loading">
+        <div class="product-card" *ngFor="let product of filteredProducts">
+            <div class="product-image">
+                <img [src]="api.getImageUrl(product.image)" [alt]="product.name">
+                <div class="category-badge">{{product.category}}</div>
+            </div>
+            <div class="product-info">
+                <h3>{{product.name}}</h3>
+                <p class="description">{{product.description}}</p>
+                
+                <div class="price-row">
+                    <span class="price">₹{{product.price}}</span>
+                    <div class="quantity-selector">
+                        <button (click)="updateQuantity(product, -1)" class="qty-btn">
+                            <span class="material-symbols-outlined icon-small" *ngIf="product.selectedQuantity === 1 && isInCart(product.id)">delete</span>
+                            <span *ngIf="!(product.selectedQuantity === 1 && isInCart(product.id))">-</span>
+                        </button>
+                        <span class="qty-val">{{product.selectedQuantity}}</span>
+                        <button (click)="updateQuantity(product, 1)" class="qty-btn">+</button>
+                    </div>
+                </div>
+
+                <div class="cart-actions-row" *ngIf="isInCart(product.id)">
+                    <button class="btn btn-success view-cart-btn" (click)="handleCartAction(product)">
+                        <span class="material-symbols-outlined btn-icon">visibility</span> 
+                        VIEW IN CART
+                    </button>
+                    <button class="btn btn-outline remove-cart-btn" (click)="removeFromCart(product)" title="Remove from Cart">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+                <button *ngIf="!isInCart(product.id)" class="btn btn-primary w-100 add-to-cart-btn" (click)="handleCartAction(product)">
+                    <span class="material-symbols-outlined btn-icon">shopping_cart</span> 
+                    ADD TO CART
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

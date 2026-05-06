@@ -1,0 +1,118 @@
+<div class="admin-dashboard">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="material-symbols-outlined">fitness_center</span>
+      <h2>CHEST DAY<span>{{ isEliteAdmin ? 'ELITE' : '' }} ADMIN</span></h2>
+    </div>
+
+    <nav>
+      <a routerLink="/admin">
+        <span class="material-symbols-outlined">grid_view</span>
+        Products
+      </a>
+      <a routerLink="/admin/branches">
+        <span class="material-symbols-outlined">location_on</span>
+        Branches
+      </a>
+      <a routerLink="/admin/plans" routerLinkActive="active">
+        <span class="material-symbols-outlined">payments</span>
+        Plans
+      </a>
+      <a routerLink="/admin/memberships" routerLinkActive="active">
+        <span class="material-symbols-outlined">loyalty</span>
+        Memberships
+      </a>
+      <a routerLink="/admin/members">
+        <span class="material-symbols-outlined">group</span>
+        Members
+      </a>
+      <a routerLink="/admin/orders" class="active">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        Orders
+      </a>
+      <a routerLink="/admin/users" *ngIf="isEliteAdmin">
+        <span class="material-symbols-outlined">manage_accounts</span>
+        Admins
+      </a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header>
+      <div class="search-bar">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" placeholder="Search orders by ID or customer..." [(ngModel)]="searchTerm" (input)="onSearch()">
+      </div>
+    </header>
+
+    <div class="table-card">
+      @if (isLoading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading orders...</p>
+      </div>
+      } @else {
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of orders; track order.id) {
+          <tr>
+            <td>
+              <div class="order-id">#{{ order.id.substring(0, 8) }}...</div>
+            </td>
+            <td>
+              <div class="customer-info" *ngIf="order.user">
+                <div class="customer-name">{{ order.user.name }}</div>
+                <div class="customer-email">{{ order.user.email }}</div>
+              </div>
+              <span class="not-assigned" *ngIf="!order.user">UNKNOWN USER</span>
+            </td>
+            <td>
+              <div class="order-date">{{ order.createdAt | date:'medium' }}</div>
+            </td>
+            <td>
+              <div class="order-total">${{ order.totalAmount | number:'1.2-2' }}</div>
+            </td>
+            <td>
+              <span class="status-badge" [class]="getStatusClass(order.status)">
+                {{ order.status | uppercase }}
+              </span>
+            </td>
+            <td class="actions">
+              <button (click)="viewDetail(order.id)" class="btn-icon edit" title="View Detail">
+                <span class="material-symbols-outlined">visibility</span>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (orders.length > 0) {
+      <app-pagination
+        [totalItems]="totalItems"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage"
+        (pageChange)="onPageChange($event)">
+      </app-pagination>
+      }
+
+      @if (orders.length === 0) {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">shopping_cart_off</span>
+        <p>No orders found.</p>
+      </div>
+      }
+      }
+    </div>
+  </main>
+</div>

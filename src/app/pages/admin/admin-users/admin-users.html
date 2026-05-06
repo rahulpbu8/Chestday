@@ -1,0 +1,111 @@
+<div class="admin-dashboard">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="material-symbols-outlined">fitness_center</span>
+      <h2>CHEST DAY<span>{{ isEliteAdmin ? 'ELITE' : '' }} ADMIN</span></h2>
+    </div>
+
+    <nav>
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <span class="material-symbols-outlined">grid_view</span>
+        Products
+      </a>
+      <a routerLink="/admin/branches" routerLinkActive="active">
+        <span class="material-symbols-outlined">location_on</span>
+        Branches
+      </a>
+      <a routerLink="/admin/plans" routerLinkActive="active">
+        <span class="material-symbols-outlined">payments</span>
+        Plans
+      </a>
+      <a routerLink="/admin/memberships" routerLinkActive="active">
+        <span class="material-symbols-outlined">loyalty</span>
+        Memberships
+      </a>
+      <a routerLink="/admin/members" routerLinkActive="active">
+        <span class="material-symbols-outlined">group</span>
+        Members
+      </a>
+      <a routerLink="/admin/orders" routerLinkActive="active">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        Orders
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="active" *ngIf="isEliteAdmin">
+        <span class="material-symbols-outlined">manage_accounts</span>
+        Admins
+      </a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header>
+      <div class="search-bar">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" placeholder="Search admins..." [(ngModel)]="searchTerm" (input)='onSearch()'>
+      </div>
+
+      <div class="header-actions">
+        <button routerLink="/admin/users/new" class="btn-add">
+          <span class="material-symbols-outlined">person_add</span>
+          ADD ADMIN
+        </button>
+      </div>
+    </header>
+
+    <div class="table-card">
+      @if (isLoading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading admins...</p>
+      </div>
+      } @else {
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user.id) {
+          <tr>
+            <td>
+              <div class="branch-name">{{ user.name }}</div>
+            </td>
+            <td>{{ user.email }}</td>
+            <td>
+              <span class="status-badge" [class.popular]="user.role === 'super_admin'">
+                {{ getRoleLabel(user.role) }}
+              </span>
+            </td>
+            <td>{{ user.createdAt | date:'mediumDate' }}</td>
+            <td class="actions">
+              <button (click)="onEdit(user.id)" class="btn-icon edit" title="Edit">
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button (click)="onDelete(user.id)" class="btn-icon delete" title="Delete">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (users.length === 0) {
+      <div class="empty-state">
+        <span class="material-symbols-outlined">group</span>
+        <p>No admin users found matching your search.</p>
+      </div>
+      }
+
+      <!-- Pagination -->
+      <app-pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [currentPage]="currentPage"
+        (pageChange)="onPageChange($event)"></app-pagination>
+      }
+    </div>
+  </main>
+</div>

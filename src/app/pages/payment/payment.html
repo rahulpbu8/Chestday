@@ -1,0 +1,61 @@
+<div class="page-header">
+    <h1 class="text-gradient">SECURE <span>PAYMENT</span></h1>
+</div>
+
+<div class="container section">
+    <div *ngIf="loading" class="text-center w-100">
+        <span class="spinner-border text-primary"></span>
+    </div>
+
+    <div class="payment-wrapper" *ngIf="!loading && planDetails">
+        <div class="order-summary">
+            <h2 class="text-gradient">Order <span>Summary</span></h2>
+            <div class="summary-card">
+                <div class="item">
+                    <span>Membership Plan</span>
+                    <span>{{planDetails.name}}</span>
+                </div>
+                <div class="item">
+                    <span>Duration</span>
+                    <span>{{planDetails.period}}</span>
+                </div>
+                <div class="divider"></div>
+                <div class="total">
+                    <span>Total Amount</span>
+                    <span class="amount">₹{{planDetails.price}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-methods">
+            <h2 class="text-gradient">Select <span>Method</span></h2>
+            <div class="methods-grid">
+                <div class="method-card" *ngFor="let method of paymentMethods"
+                    [class.active]="selectedMethod === method.id" (click)="selectMethod(method.id)">
+                    <div class="icon">
+                        <span class="material-symbols-outlined">{{ method.icon }}</span>
+                    </div>
+                    <h3>{{ method.name }}</h3>
+                    <div class="options-list">
+                        <span *ngFor="let opt of method.options">{{ opt }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-area">
+                <button class="btn btn-primary" [disabled]="!selectedMethod || isProcessing" (click)="processPayment()">
+                    <span *ngIf="!isProcessing">PAY ₹{{planDetails.price}}</span>
+                    <span *ngIf="isProcessing">PROCESSING...</span>
+                </button>
+                <p class="secure-note">
+                    <span class="material-symbols-outlined">lock</span> 100% Secure Transaction
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && !planDetails" class="text-center">
+        <h3>No plan selected</h3>
+        <a routerLink="/pricing" class="btn btn-primary">Choose a Plan</a>
+    </div>
+</div>

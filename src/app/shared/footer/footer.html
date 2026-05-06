@@ -1,0 +1,33 @@
+<footer class="footer" [class.admin-footer]="isAdminView">
+    <div class="container footer-content" *ngIf="!isAdminView">
+        <div class="footer-logo">
+            <h2>CHEST DAY<span>.</span></h2>
+            <p>Building bodies, forging iron.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a routerLink="/">Home</a></li>
+                <li><a routerLink="/about">About Us</a></li>
+                <li><a routerLink="/branches">Branches</a></li>
+                <li><a routerLink="/contact">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-contact">
+            <h3>Contact</h3>
+            <p>Email: info@chestdaygym.com</p>
+            <p>Phone: +91 98765 43210</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="admin-footer-branding" *ngIf="isAdminView">
+                <h2>CHEST DAY<span> Admin</span></h2>
+            </div>
+            <p>&copy; 2024 Chest Day Gym. All rights reserved.</p>
+        </div>
+    </div>
+</footer>

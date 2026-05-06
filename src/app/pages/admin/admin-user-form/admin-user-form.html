@@ -1,0 +1,66 @@
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <span class="material-symbols-outlined">{{ isEditMode ? 'manage_accounts' : 'person_add' }}</span>
+      <h2>{{ isEditMode ? 'Edit' : 'Add New' }} Admin User</h2>
+    </div>
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined">person</span>
+            <input type="text" id="name" formControlName="name" placeholder="e.g., John Doe" autocomplete="name">
+          </div>
+          <div class="error" *ngIf="userForm.get('name')?.touched && userForm.get('name')?.invalid">
+            Full name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined">mail</span>
+            <input type="email" id="email" formControlName="email" placeholder="e.g., john@example.com"
+              autocomplete="email">
+          </div>
+          <div class="error" *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid">
+            A valid email address is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">{{ isEditMode ? 'New Password (optional)' : 'Password' }}</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined">lock</span>
+            <input type="password" id="password" formControlName="password" placeholder="••••••••"
+              autocomplete="new-password">
+          </div>
+          <div class="error" *ngIf="userForm.get('password')?.touched && userForm.get('password')?.invalid">
+            {{ isEditMode ? 'Password must be at least 6 characters' : 'Password is required (min 6 chars)' }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="role">User Role</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-outlined">badge</span>
+            <select id="role" formControlName="role">
+              <option value="admin">ADMIN</option>
+              <option value="super_admin">ELITE ADMIN</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="onCancel()" [disabled]="isLoading">CANCEL</button>
+        <button type="submit" class="btn-submit" [disabled]="userForm.invalid || isLoading">
+          <span class="spinner" *ngIf="isLoading"></span>
+          {{ isEditMode ? 'UPDATE ADMIN' : 'CREATE ADMIN' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

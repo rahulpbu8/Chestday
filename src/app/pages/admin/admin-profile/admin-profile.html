@@ -1,0 +1,118 @@
+<div class="profile-container">
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="avatar-circle">
+        <span class="material-symbols-outlined">person</span>
+      </div>
+      <div class="header-info">
+        <h2>Admin Profile</h2>
+        <p>{{ admin?.email }}</p>
+      </div>
+    </div>
+
+    <div class="profile-content">
+      <!-- Profile Details Form -->
+      <section class="profile-section">
+        <div class="section-title">
+          <span class="material-symbols-outlined">badge</span>
+          <h3>Personal Details</h3>
+        </div>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onUpdateProfile()">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <div class="input-wrapper">
+                <span class="material-symbols-outlined">person</span>
+                <input type="text" id="name" formControlName="name" placeholder="Your name">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <div class="input-wrapper">
+                <span class="material-symbols-outlined">phone</span>
+                <input type="text" id="phone" formControlName="phone" placeholder="+1 (555) 000-0000">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address (Locked)</label>
+              <div class="input-wrapper locked">
+                <span class="material-symbols-outlined">mail</span>
+                <input type="email" id="email" formControlName="email">
+              </div>
+            </div>
+          </div>
+
+          <div class="section-actions">
+            <button type="submit" class="btn-update" [disabled]="profileForm.invalid || isLoading">
+              <span class="spinner" *ngIf="isLoading"></span>
+              SAVE CHANGES
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Password Change Section -->
+      <section class="profile-section security">
+        <div class="section-title">
+          <span class="material-symbols-outlined">lock</span>
+          <h3>Security & Password</h3>
+        </div>
+
+        <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="oldPassword">Current Password</label>
+              <div class="input-wrapper">
+                <span class="material-symbols-outlined">key</span>
+                <input type="password" id="oldPassword" formControlName="oldPassword" placeholder="••••••••">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="newPassword">New Password</label>
+              <div class="input-wrapper">
+                <span class="material-symbols-outlined">lock_reset</span>
+                <input type="password" id="newPassword" formControlName="newPassword" placeholder="New password">
+              </div>
+              <div class="error"
+                *ngIf="passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.errors?.['minlength']">
+                Min 6 characters required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Confirm New Password</label>
+              <div class="input-wrapper">
+                <span class="material-symbols-outlined">verified_user</span>
+                <input type="password" id="confirmPassword" formControlName="confirmPassword"
+                  placeholder="Confirm new password">
+              </div>
+              <div class="error"
+                *ngIf="passwordForm.get('confirmPassword')?.touched && passwordForm.hasError('mismatch')">
+                Passwords do not match
+              </div>
+            </div>
+          </div>
+
+          <div class="section-actions">
+            <button type="submit" class="btn-update security-btn"
+              [disabled]="passwordForm.invalid || isPasswordLoading">
+              <span class="spinner" *ngIf="isPasswordLoading"></span>
+              CHANGE PASSWORD
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div class="profile-footer">
+      <button class="btn-back" routerLink="/admin">
+        <span class="material-symbols-outlined">arrow_back</span>
+        Back to Dashboard
+      </button>
+    </div>
+  </div>
+</div>
